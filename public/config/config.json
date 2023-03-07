@@ -1,0 +1,18 @@
+{
+  "CONTRACT_ADDRESS": "0x0f7Dbe0C26Fe47Be55a678BC8E844BF4d44DfF2e",
+  "SCAN_LINK": "https://ftmscan.com/address/0x0f7dbe0c26fe47be55a678bc8e844bf4d44dff2e",
+  "NETWORK": {
+    "NAME": "Fantom Opera",
+    "SYMBOL": "FTM",
+    "ID": 250
+  },
+  "NFT_NAME": "StillPillFTM",
+  "SYMBOL": "SP",
+  "MAX_SUPPLY": 2850,
+  "WEI_COST": 10000000000000000000,
+  "DISPLAY_COST": 10,
+  "GAS_LIMIT": 285000,
+  "MARKETPLACE": "nftkey",
+  "MARKETPLACE_LINK": "https://nftkey.app/collections/cryptoman",
+  "SHOW_BACKGROUND": true
+}
