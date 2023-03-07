@@ -515,7 +515,7 @@ Each ALL-In-One-Color pill is a ticket to upcoming raffles.
             Phase 2:
                                 <s.SpacerSmall />
 
-          Liquidity Bootstrapping Pool (LBP), we go live at BeethovenX to ensure the best price discovery to the users.
+          Liquidity Bootstrapping Pool (LBP), will go live at BeethovenX while minting to ensure the best price discovery for our users.
                     </p>
         </div>
         <div className="phase">
