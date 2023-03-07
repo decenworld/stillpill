@@ -357,10 +357,10 @@ function get_all_nfts(){
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)", paddingRight: "200px", paddingLeft: "200px" }}
                 >
-Info: Total supply 2500 normal pills + 350 Rainbow pills. Preminted 1200 pills (850 pills for airdrop and 350 Rainbows).
-Mint Price 15 FTM.
-Rainbow pills cannot be minted, only exchanged using 7 different colour pills.
-Each rainbow is a ticket to upcoming raffles.
+Info: Total supply 2500 normal pills + 350 ALL-In-One-Color pills. Preminted 1200 pills (850 pills for airdrop and 350 ALL-In-One-Color pill).
+Mint Price 10 FTM.
+ALL-In-One-Color pill pills cannot be minted, only exchanged using 7 different colour pills.
+Each ALL-In-One-Color pill is a ticket to upcoming raffles.
                 </s.TextDescription>
                 <s.SpacerSmall />
                 {blockchain.account === "" ||
