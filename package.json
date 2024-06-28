@@ -1,8 +1,6 @@
 {
-  "name": "kitten-website",
+  "name": "kitten",
   "version": "1.0.0",
-  "description": "kitten website",
-  "main": "functions/server.js",
   "scripts": {
     "build": "netlify-lambda build functions"
   },
