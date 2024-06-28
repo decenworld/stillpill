@@ -1,8 +1,17 @@
 [build]
+  command = "npm run build"
   publish = "public"
-  functions = "functions"
+  functions = "functions-build"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# package.json (update the scripts section)
+{
+  "scripts": {
+    "build": "netlify-lambda build src/lambda && cp -r public functions-build",
+    "start": "netlify-lambda serve src/lambda"
+  }
+}
