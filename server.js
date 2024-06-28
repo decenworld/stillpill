@@ -1,12 +1,14 @@
 const express = require('express');
-const serverless = require('serverless-http');
-
+const path = require('path');
 const app = express();
 
-app.get('/.netlify/functions/server', (req, res) => {
-  res.json({ message: "Hello from the server!" });
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Add any other routes you need here
-
-module.exports.handler = serverless(app);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
