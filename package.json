@@ -1,8 +1,8 @@
 {
-  "name": "kitten",
+  "name": "your-project-name",
   "version": "1.0.0",
   "scripts": {
-    "build": "netlify-lambda build functions"
+    "build": "npm install && netlify-lambda build functions"
   },
   "dependencies": {
     "express": "^4.17.1",
