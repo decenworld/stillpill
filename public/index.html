@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitten on AVAX</title>
+    <meta name="ethereum-dapp-url-scheme" content="metamask-dapp://">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
@@ -137,21 +138,13 @@ async function getTotalSupply() {
 }
 
 
-  async function connectWallet() {
+ async function connectWallet() {
     console.log('Attempting to connect wallet...');
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
     if (typeof window.ethereum !== 'undefined') {
         try {
-            if (isMobile) {
-                // For mobile, use deep linking
-                const dappUrl = encodeURIComponent(window.location.href);
-                const metamaskAppDeepLink = `https://metamask.app.link/dapp/${dappUrl}`;
-                window.location.href = metamaskAppDeepLink;
-                return;
-            }
-
-            // For desktop, proceed as before
+            // For both mobile and desktop, attempt to connect directly
             await switchToAVAXChain();
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             selectedAccount = accounts[0];
@@ -163,7 +156,18 @@ async function getTotalSupply() {
             await updateUI();
         } catch (error) {
             console.error('Failed to connect with MetaMask:', error);
+            if (isMobile) {
+                // If direct connection fails on mobile, try deep linking
+                const dappUrl = encodeURIComponent(window.location.href);
+                const metamaskAppDeepLink = `https://metamask.app.link/dapp/${dappUrl}`;
+                window.location.href = metamaskAppDeepLink;
+            }
         }
+    } else if (isMobile) {
+        // If MetaMask is not detected on mobile, use deep linking
+        const dappUrl = encodeURIComponent(window.location.href);
+        const metamaskAppDeepLink = `https://metamask.app.link/dapp/${dappUrl}`;
+        window.location.href = metamaskAppDeepLink;
     } else {
         // WalletConnect logic (for non-MetaMask wallets)
         try {
