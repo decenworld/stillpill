@@ -3,14 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitten on Solana</title>
+    <title>Kitten on AVAX</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.1/dist/umd/index.min.js"></script>
     <script>
-  fetch('/.netlify/functions/server')
-    .then(response => response.json())
-    .then(data => console.log(data.message));
-</script>
+        const AVAX_CHAIN_ID = '0xa86a';
+        const AVAX_RPC_URL = 'https://api.avax.network/ext/bc/C/rpc';
+        
+        let web3;
+        let selectedAccount;
+let contract;
+        const CONTRACT_ADDRESS = '0x75f1422ab4faf39c73e6d5020518d0e47edbd740'; // Replace with your actual contract address
+const CONTRACT_ABI = [{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"string","name":"_initBaseURI","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address[100]","name":"_users","type":"address[100]"}],"name":"add100PresaleUsers","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"addPresaleUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseExtension","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cost","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxMintAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_mintAmount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bool","name":"_state","type":"bool"}],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleCost","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"presaleWallets","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"removePresaleUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"removeWhitelistUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_newBaseExtension","type":"string"}],"name":"setBaseExtension","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_newBaseURI","type":"string"}],"name":"setBaseURI","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_newCost","type":"uint256"}],"name":"setCost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_newCost","type":"uint256"}],"name":"setPresaleCost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_newmaxMintAmount","type":"uint256"}],"name":"setmaxMintAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"name":"walletOfOwner","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"whitelistUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"whitelisted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"payable","type":"function"}];
+
+
+function scrollToMint(event) {
+    event.preventDefault();
+    const mintSection = document.getElementById('mint-section');
+    mintSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+     async function connectWallet() {
+    if (typeof window.ethereum !== 'undefined') {
+        try {
+            await switchToAVAXChain();
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            selectedAccount = accounts[0];
+            web3 = new Web3(window.ethereum);
+            contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS, {
+                from: selectedAccount,
+            });
+            console.log('Connected with MetaMask:', selectedAccount);
+        } catch (error) {
+            console.error('Failed to connect with MetaMask:', error);
+        }
+    } else {
+        try {
+            const provider = new WalletConnectProvider({
+                rpc: { [AVAX_CHAIN_ID]: AVAX_RPC_URL }
+            });
+            await provider.enable();
+            web3 = new Web3(provider);
+            const accounts = await web3.eth.getAccounts();
+            selectedAccount = accounts[0];
+            contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS, {
+                from: selectedAccount,
+            });
+            console.log('Connected with WalletConnect:', selectedAccount);
+        } catch (error) {
+            console.error('Failed to connect with WalletConnect:', error);
+        }
+    }
+    await updateUI(); // Add this line
+}
+
+
+        async function switchToAVAXChain() {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: AVAX_CHAIN_ID }],
+                });
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: AVAX_CHAIN_ID,
+                                chainName: 'Avalanche Network',
+                                nativeCurrency: { name: 'AVAX', symbol: 'AVAX', decimals: 18 },
+                                rpcUrls: [AVAX_RPC_URL],
+                                blockExplorerUrls: ['https://snowtrace.io/'],
+                            }],
+                        });
+                    } catch (addError) {
+                        console.error('Failed to add Avalanche network:', addError);
+                    }
+                } else {
+                    console.error('Failed to switch to Avalanche network:', switchError);
+                }
+            }
+        }
+
+        
+async function mint() {
+    if (!selectedAccount) {
+        await connectWallet();
+    }
+    let totalCostWei = String(parseFloat(mintAmount) * 1000000000000000000);
+    try {
+        await contract.methods.mint(selectedAccount, mintAmount).send({
+            from: selectedAccount,
+            value: totalCostWei,
+            gasLimit: String(parseFloat(mintAmount) * 285000),
+        });
+    } catch (err) {
+        console.log("user declined");
+    }
+    await updateUI();
+}
+let mintAmount = 3;
+
+function updateMintAmountDisplay() {
+    document.getElementById("mint-amount").innerHTML = mintAmount;
+}
+
+// Call this function when the page loads
+window.addEventListener('load', () => {
+    updateMintAmountDisplay();
+});
+
+// nye
+        async function getOwnedTokens(account) {
+    try {
+        const balance = await contract.methods.balanceOf(account).call();
+        let ownedTokens = [];
+        for (let i = 0; i < balance; i++) {
+            const tokenId = await contract.methods.tokenOfOwnerByIndex(account, i).call();
+            ownedTokens.push(tokenId);
+        }
+        return ownedTokens;
+    } catch (err) {
+        console.log("Error getting owned tokens:", err);
+        return [];
+    }
+}
+
+
+
+//
+const setMintAmount = (newAmount) => {
+    mintAmount = newAmount;
+    updateMintAmountDisplay();
+};
+
+const decrementMintAmount = () => {
+  let newMintAmount = mintAmount - 1;
+  if (newMintAmount < 1) {
+    newMintAmount = 1;
+  }
+  setMintAmount(newMintAmount);
+};
+
+const incrementMintAmount = () => {
+  let newMintAmount = mintAmount + 1;
+  if (newMintAmount > 50) {
+    newMintAmount = 50;
+  }
+  setMintAmount(newMintAmount);
+};
+
+async function getTotalSupply() {
+    const provider = new Web3.providers.HttpProvider(AVAX_RPC_URL);
+    const web3Avax = new Web3(provider);
+    const contract = new web3Avax.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+    try {
+        const totalSupply = await contract.methods.totalSupply().call();
+        console.log("Total Supply:", totalSupply);
+        document.getElementById("resultsupply").innerHTML = totalSupply;
+    } catch (err) {
+        console.log("Error:", err);
+    }
+}
+async function updateUI() {
+    const connectButton = document.getElementById('connectButton');
+    const visionSection = document.querySelector('.vision');
+    
+    if (selectedAccount) {
+        connectButton.textContent = selectedAccount.slice(0, 6) + '...' + selectedAccount.slice(-4);
+        
+        visionSection.innerHTML = `
+            <h2>Your Kittens</h2>
+            <div class="refresh-container">
+                <button id="refreshButton" class="btn">Refresh</button>
+            </div>
+            <div class="token-grid"></div>
+        `;
+        const tokenGrid = visionSection.querySelector('.token-grid');
+        const refreshButton = document.getElementById('refreshButton');
+        refreshButton.addEventListener('click', updateUI);
+        
+        const ownedTokens = await getOwnedTokens(selectedAccount);
+        
+        if (ownedTokens.length === 0) {
+            tokenGrid.innerHTML = '<p>You don\'t own any Kittens yet. Mint some to see them here!</p>';
+        } else {
+            for (let i = 0; i < ownedTokens.length; i++) {
+                const tokenId = ownedTokens[i];
+                const tokenImage = document.createElement('img');
+                tokenImage.src = `./nfts/images/${tokenId}.png`;
+                tokenImage.alt = `Kitten #${tokenId}`;
+                tokenImage.className = 'token-image';
+                tokenGrid.appendChild(tokenImage);
+                
+                // Add a 2-second delay between each image fetch
+                if (i < ownedTokens.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+            }
+        }
+    } else {
+        connectButton.textContent = 'Connect Wallet';
+        visionSection.innerHTML = '<p>Connect your wallet to see your Kittens!</p>';
+    }
+
+    // Update the total supply
+    await getTotalSupply();
+}
+window.addEventListener('load', async () => {
+    document.getElementById('connectButton').addEventListener('click', connectWallet);
+    await getTotalSupply();
+    updateUI();
+});
+        fetch('/.netlify/functions/server')
+            .then(response => response.json())
+            .then(data => console.log(data.message));
+    </script>
 </head>
 <body>
     <header>
@@ -18,14 +229,10 @@
             <nav>
                 <div class="logo">
                     <img src="/images/logo.png" alt="CapyVault Logo">
-                    <span>Kitten</span>
+                    <span>KittenWorld</span>
                 </div>
                 <div class="nav-links">
-                    <!--
-                    <a href="#">Docs</a>
-                    <a href="#">Litepaper</a>
-                    -->
-                    <a href="https://pump.fun/7jsxsPdXmdmpkMT7KeTKwm9mf96hHvFp3cLVcz2Mpump" class="btn">Buy Now</a>
+                    <button id="connectButton" class="btn">Connect Wallet</button>
                 </div>
             </nav>
         </div>
@@ -34,20 +241,33 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <div class="hero-text">
-                    <h1>You love cats!?</h1>
-                    <p>Join Kitten on Solana to Grow Your Portfolio on Autopilot</p>
+                <div class="hero-text" >
+                    <h1 style="font-size: 75px; text-shadow: -0px -0px 0 #597cff, 0px 0px 0 #597cff, -0px 0px 0 #597cff, 3px 3px 0 #597cff;">You love cats!?</h1>
+                    <p>Join Kitten on AVAX to Grow Your Portfolio on Autopilot</p>
                     <div class="hero-buttons">
-                        <a href="https://pump.fun/7jsxsPdXmdmpkMT7KeTKwm9mf96hHvFp3cLVcz2Mpump" class="btn">Buy Now</a>
-                        <a href="https://pump.fun/7jsxsPdXmdmpkMT7KeTKwm9mf96hHvFp3cLVcz2Mpump" class="btn btn-outline">Dexscreener</a>
+<a href="#mint-section" style="font-size: 30px;" class="btn bouncing" onclick="scrollToMint(event)">Mint Now</a>
                     </div>
-                </div>
-                <div class="hero-image">
-                    <img src="/images/hero-image.png" alt="Kitten on solana Image">
                 </div>
             </div>
         </div>
     </section>
+
+    <div id="content" style="display: block;">
+        <div class="suprator-container">
+            <div class="suprator" style="transform: rotate(5deg);">
+                <div class="scrolling-text" style="transform: rotate(20deg);">
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <section class="capybara-group">
         <div class="container">
@@ -57,7 +277,7 @@
 
     <section class="mission">
         <div class="container">
-            <h2>Kitten's Mission</h2>
+            <h2 style="text-shadow: -0px -0px 0 #597cff, 0px 0px 0 #597cff, -0px 0px 0 #597cff, 3px 3px 0 #597cff;font-weight: 700;">Kitten's Mission</h2>
             <div class="mission-card">
                 <img src="/images/mission-icon.png" alt="Mission Icon">
                 <p>"We're on a mission to get the word out about $kitten on social media!"</p>
@@ -69,67 +289,37 @@
                     <p>We want to make friends with as many animals as possible.</p>
                 </div>
             </div>
-            <!--
-            <div class="capybaras-together">
-                <img src="/images/capybaras-together.png" alt="Capybaras Together">
-                <p>Capybaras Together Are Stronger</p>
-            </div>
-        -->
         </div>
     </section>
 
-    <section class="how-it-works">
+<section id="mint-section" class="how-it-works">
         <div class="container">
-            <h2>Buy on pump.fun</h2>
-            <!--
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">01</div>
-                    <div class="step-content">
-                        <h3>Join a Vault</h3>
-                        <p>Choose a vault aligning with your risk appetite, deposit your assets, and let the DAO handle the rest.</p>
-                    </div>
+            <h2>Total Minted</h2>
+            
+            <div style="text-align: center; color: white">
+
+                <div style="display: flex; justify-content: center; margin-top: -30px; margin-bottom: 0px">
+                    <br>
+                    <span style="color: #fff; font-weight: 700; font-size:20px" id="resultsupply"></span>
+                    <span style="color: #fff; font-weight: 700; font-size: 20px;">/1000</span>
+                    
                 </div>
-                <div class="step">
-                    <div class="step-number">02</div>
-                    <div class="step-content">
-                        <h3>DAO</h3>
-                        <p>Our active DAOs, comprised of DeFi experts, continuously optimize strategies to maximize returns while managing risks.</p>
-                    </div>
+                <div style="display: flex; justify-content: center; margin-top: 10px; margin-bottom: 10px">
+                    <img style="width: 200px; height: 200px; border: 1px black solid" src="example.webp">
                 </div>
-                <div class="step">
-                    <div class="step-number">03</div>
-                    <div class="step-content">
-                        <h3>DeFi Without Hassles</h3>
-                        <p>Enjoy the benefits of DeFi without the complexity. We handle the technical details so you can focus on your gains.</p>
-                    </div>
+                <div style="display: flex; justify-content: center; margin-top: 10px; margin-bottom: 10px">
+                    <h4 style="text-align: center; margin-bottom: 2px; color: white; font-weight: 700;">1 AVAX</h4>
                 </div>
-            </div>-->
+          <div style="display: flex; justify-content: center; margin-top: 10px; margin-bottom: 10px">
+  <button class="btn" style="line-height: 0.4;" onclick="decrementMintAmount()">-</button>
+  <span id="mint-amount" style="color: #d65752; font-size: 2rem; padding-left: 10px; padding-right: 10px;">&nbsp;3&nbsp;</span>
+  <button class="btn" style="line-height: 0.4" onclick="incrementMintAmount()">+</button>
+</div>
+<button class="btn" style="font-size: 20px;" onclick="mint()">MINT NOW</button>            </div>
         </div>
     </section>
 
     <section class="vision">
-        <!--
-        <div class="container">
-            <h2>CapyVault's Vision</h2>
-            <div class="vision-image">
-                <img src="/images/vision-image.png" alt="CapyVault Vision">
-            </div>
-            <div class="vision-phases">
-                <div class="phase">
-                    <h3>01 CapyPioneer Phase</h3>
-                    <p>We are launching on the NEAR blockchain to tap into its growing DeFi ecosystem. Our first vaults will focus on proven yield farming strategies.</p>
-                </div>
-                <div class="phase">
-                    <h3>02 CapyExpansion Phase</h3>
-                    <p>Our intuitive UI and UX combined with the power of DAOs will open up DeFi to millions of new users. We'll expand to other chains and introduce more sophisticated strategies.</p>
-                </div>
-                <div class="phase">
-                    <h3>03 CapyUniverse Phase</h3>
-                    <p>We aim to become a major DeFi player with $1B+ AUM, 1M+ users across multiple chains. CapyVault will be synonymous with hassle-free, high-yield DeFi investing.</p>
-                </div>
-            </div>
-        </div>-->
     </section>
 </body>
 </html>

@@ -1,3 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
+.suprator-container {
+  position: relative;
+}
+
+.blue-suprator,
+.suprator {
+  width: 100%;
+
+  position: absolute;
+}
+
+.suprator {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  font-family: "Oswald", sans-serif;
+  /* transform: rotate(5deg); */
+  z-index: 12;
+}
+
+.blue-suprator {
+  height: 65px;
+  background-color: #597cff;
+  z-index: 11;
+  top: 0;
+}
+
+.scrolling-text {
+  display: inline-block;
+  font-size: 35px;
+  animation: scroll-left 30s linear infinite;
+  background-color: #ffd200;
+  border: 5px solid white;
+  transform: rotate(20deg); /*  Rotate the text */
+  padding: 7.5px 10px; /* Add padding to avoid clipping the text */
+}
+
+.scrolling-text span {
+  padding-right: 50px; /* Adjust spacing as needed */
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes bouncing {
+  0%,
+  100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.bouncing {
+  animation: bouncing 0.5s linear infinite;
+  display: block;
+  width: fit-content;
+}
+
+
+
+
+
 :root {
     --bg-light: #F0F8FF;
     --primary-blue: #4169E1;
@@ -74,8 +148,22 @@ nav {
     color: var(--text-dark);
     text-decoration: none;
     border-radius: 5px;
-    font-weight: 600;
+    font-weight: 700;
 }
+
+
+    .token-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .token-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
 
 /* Hero Section Styles */
 .hero {
@@ -143,12 +231,14 @@ nav {
 @media (max-width: 768px) {
     .capybara-group img {
         max-width: 80%;
+        margin-top: 40px;
     }
 }
 
 @media (max-width: 480px) {
     .capybara-group img {
         max-width: 60%;
+                margin-top: 40px;
     }
 }
 
@@ -303,3 +393,37 @@ nav {
         margin-top: 30px;
     }
 }
+
+  .refresh-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    #refreshButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #refreshButton:hover {
+        background-color: #45a049;
+    }
+
+    .token-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .token-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
