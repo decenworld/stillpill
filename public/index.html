@@ -8,144 +8,53 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
-    <script src="https://bundle.run/buffer@6.0.3"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@rainbow-me/rainbowkit@1.0.0/dist/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/wagmi@1.0.0/dist/wagmi.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/viem@1.0.0/dist/viem.min.js"></script>
-    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.1/dist/umd/index.min.js"></script>
+    <script src="https://unpkg.com/@web3modal/ethereum@2.6.2/dist/index.umd.js"></script>
+    <script src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+
     <script>
-        
         const AVAX_CHAIN_ID = '0xa86a';
         const AVAX_RPC_URL = 'https://api.avax.network/ext/bc/C/rpc';
-        const CONTRACT_ADDRESS = '0x75f1422ab4faf39c73e6d5020518d0e47edbd740';
-const CONTRACT_ABI = [{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"string","name":"_initBaseURI","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address[100]","name":"_users","type":"address[100]"}],"name":"add100PresaleUsers","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"addPresaleUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseExtension","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cost","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxMintAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_mintAmount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bool","name":"_state","type":"bool"}],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleCost","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"presaleWallets","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"removePresaleUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"removeWhitelistUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_newBaseExtension","type":"string"}],"name":"setBaseExtension","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_newBaseURI","type":"string"}],"name":"setBaseURI","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_newCost","type":"uint256"}],"name":"setCost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_newCost","type":"uint256"}],"name":"setPresaleCost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_newmaxMintAmount","type":"uint256"}],"name":"setmaxMintAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"name":"walletOfOwner","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"whitelistUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"whitelisted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"payable","type":"function"}];
-      
-     let web3;
+        
+        let web3;
         let selectedAccount;
         let contract;
-
-const { getDefaultWallets, RainbowKitProvider, ConnectButton } = rainbowkit;
-const { configureChains, createConfig, WagmiConfig } = wagmi;
-const { avalanche } = wagmi.chains;
-const { publicProvider } = wagmi.providers;
-
-        const { chains, publicClient } = configureChains(
-            [avalanche],
-            [publicProvider()]
-        );
-
-        const { connectors } = getDefaultWallets({
-            appName: 'Kitten on AVAX',
-            projectId: '943aba92ee4f57b712d7a6fcbaa6d1b2',
-            chains
-        });
-
-        const wagmiConfig = createConfig({
-            autoConnect: true,
-            connectors,
-            publicClient
-        });
-
-function RainbowKitApp() {
-    return React.createElement(
-        WagmiConfig,
-        { config: wagmiConfig },
-        React.createElement(
-            RainbowKitProvider,
-            { chains: chains },
-            React.createElement('div', null,
-                React.createElement('header', null,
-                    React.createElement('div', { className: 'container' },
-                        React.createElement('nav', null,
-                            React.createElement('div', { className: 'logo' },
-                                React.createElement('img', { src: '/images/logo.png', alt: 'CapyVault Logo' }),
-                                React.createElement('span', null, 'KittenWorld')
-                            ),
-                            React.createElement('div', { className: 'nav-links' },
-                                React.createElement(ConnectButton)
-                            )
-                        )
-                    )
-                ),
-                React.createElement('section', { className: 'hero' },
-                    React.createElement('div', { className: 'container' },
-                        React.createElement('div', { className: 'hero-content' },
-                            React.createElement('div', { className: 'hero-text' },
-                                React.createElement('h1', { style: { fontSize: '75px', textShadow: '-0px -0px 0 #597cff, 0px 0px 0 #597cff, -0px 0px 0 #597cff, 3px 3px 0 #597cff' } }, 'You love cats!?'),
-                                React.createElement('p', null, 'Join Kitten on AVAX to Grow Your Portfolio on Autopilot'),
-                                React.createElement('div', { className: 'hero-buttons' },
-                                    React.createElement('a', { href: '#mint-section', style: { fontSize: '30px' }, className: 'btn bouncing', onClick: scrollToMint }, 'Mint Now')
-                                )
-                            )
-                        )
-                    )
-                ),
-                React.createElement('div', { id: 'content', style: { display: 'block' } },
-                    React.createElement('div', { className: 'suprator-container' },
-                        React.createElement('div', { className: 'suprator', style: { transform: 'rotate(5deg)' } },
-                            React.createElement('div', { className: 'scrolling-text', style: { transform: 'rotate(20deg)' } },
-                                Array(16).fill('KITTEN ON AVAX').map((text, index) => 
-                                    React.createElement('span', { key: index }, text)
-                                )
-                            )
-                        )
-                    )
-                ),
-                React.createElement('section', { className: 'capybara-group' },
-                    React.createElement('div', { className: 'container' },
-                        React.createElement('img', { src: '/images/capybara-group.png', alt: 'Kitten' })
-                    )
-                ),
-                React.createElement('section', { className: 'mission' },
-                    React.createElement('div', { className: 'container' },
-                        React.createElement('h2', { style: { textShadow: '-0px -0px 0 #597cff, 0px 0px 0 #597cff, -0px 0px 0 #597cff, 3px 3px 0 #597cff', fontWeight: '700' } }, "Kitten's Mission"),
-                        React.createElement('div', { className: 'mission-card' },
-                            React.createElement('img', { src: '/images/mission-icon.png', alt: 'Mission Icon' }),
-                            React.createElement('p', null, '"We\'re on a mission to get the word out about $kitten on social media!"')
-                        ),
-                        React.createElement('div', { className: 'mission-card' },
-                            React.createElement('img', { src: '/images/new-way-icon.png', alt: 'New Way Icon' }),
-                            React.createElement('div', null,
-                                React.createElement('h3', null, 'Making Friends'),
-                                React.createElement('p', null, 'We want to make friends with as many animals as possible.')
-                            )
-                        )
-                    )
-                ),
-                React.createElement('section', { id: 'mint-section', className: 'how-it-works' },
-                    React.createElement('div', { className: 'container' },
-                        React.createElement('h2', null, 'Total Minted'),
-                        React.createElement('div', { style: { textAlign: 'center', color: 'white' } },
-                            React.createElement('div', { style: { display: 'flex', justifyContent: 'center', marginTop: '-30px', marginBottom: '0px' } },
-                                React.createElement('br'),
-                                React.createElement('span', { id: 'resultsupply', style: { color: '#fff', fontWeight: '700', fontSize: '20px' } }),
-                                React.createElement('span', { style: { color: '#fff', fontWeight: '700', fontSize: '20px' } }, '/5000')
-                            ),
-                            React.createElement('div', { style: { display: 'flex', justifyContent: 'center', marginTop: '10px', marginBottom: '10px' } },
-                                React.createElement('img', { style: { width: '200px', height: '200px', border: '1px black solid' }, src: 'example.webp' })
-                            ),
-                            React.createElement('div', { style: { display: 'flex', justifyContent: 'center', marginTop: '10px', marginBottom: '10px' } },
-                                React.createElement('h4', { style: { textAlign: 'center', marginBottom: '2px', color: 'white', fontWeight: '700' } }, '1 AVAX')
-                            ),
-                            React.createElement('div', { style: { display: 'flex', justifyContent: 'center', marginTop: '10px', marginBottom: '10px' } },
-                                React.createElement('button', { className: 'btn', style: { lineHeight: '0.4' }, onClick: decrementMintAmount }, '-'),
-                                React.createElement('span', { id: 'mint-amount', style: { color: '#d65752', fontSize: '2rem', paddingLeft: '10px', paddingRight: '10px' } }, '3'),
-                                React.createElement('button', { className: 'btn', style: { lineHeight: '0.4' }, onClick: incrementMintAmount }, '+')
-                            ),
-                            React.createElement('button', { className: 'btn', style: { fontSize: '20px' }, onClick: mint }, 'MINT NOW')
-                        )
-                    )
-                ),
-                React.createElement('section', { className: 'vision' })
-            )
-        )
-    );
-}
+        const CONTRACT_ADDRESS = '0x75f1422ab4faf39c73e6d5020518d0e47edbd740';
+const CONTRACT_ABI = [{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"string","name":"_initBaseURI","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address[100]","name":"_users","type":"address[100]"}],"name":"add100PresaleUsers","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"addPresaleUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseExtension","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cost","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxMintAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_mintAmount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bool","name":"_state","type":"bool"}],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleCost","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"presaleWallets","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"removePresaleUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"removeWhitelistUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_newBaseExtension","type":"string"}],"name":"setBaseExtension","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_newBaseURI","type":"string"}],"name":"setBaseURI","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_newCost","type":"uint256"}],"name":"setCost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_newCost","type":"uint256"}],"name":"setPresaleCost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_newmaxMintAmount","type":"uint256"}],"name":"setmaxMintAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"name":"walletOfOwner","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"whitelistUser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"whitelisted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"payable","type":"function"}];
         function scrollToMint(event) {
             event.preventDefault();
             const mintSection = document.getElementById('mint-section');
             mintSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function switchToAVAXChain() {
+            if (!web3) return;
+            
+            try {
+                await web3.currentProvider.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: AVAX_CHAIN_ID }],
+                });
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    try {
+                        await web3.currentProvider.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: AVAX_CHAIN_ID,
+                                chainName: 'Avalanche Network',
+                                nativeCurrency: { name: 'AVAX', symbol: 'AVAX', decimals: 18 },
+                                rpcUrls: [AVAX_RPC_URL],
+                                blockExplorerUrls: ['https://snowtrace.io/'],
+                            }],
+                        });
+                    } catch (addError) {
+                        console.error('Failed to add Avalanche network:', addError);
+                    }
+                } else {
+                    console.error('Failed to switch to Avalanche network:', switchError);
+                }
+            }
         }
 
         async function mint() {
@@ -220,74 +129,119 @@ function RainbowKitApp() {
             }
         }
 
- async function connectWallet() {
-    console.log('Attempting to connect wallet...');
-    try {
-        const { connector } = await wagmi.connect();
-        const provider = await connector.getProvider();
-        web3 = new Web3(provider);
-        const accounts = await web3.eth.getAccounts();
-        selectedAccount = accounts[0];
-        contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS, {
-            from: selectedAccount,
-        });
-        console.log('Connected with RainbowKit:', selectedAccount);
-        updateUI();
-    } catch (error) {
-        console.error('Failed to connect with RainbowKit:', error);
-    }
-}
+        async function connectWallet() {
+            console.log('Attempting to connect wallet...');
 
-async function updateUI() {
-    const visionSection = document.querySelector('.vision');
-    
-    if (selectedAccount) {
-        visionSection.innerHTML = `
-            <h2>Your Kittens</h2>
-            <div class="refresh-container">
-                <button id="refreshButton" class="btn">Refresh</button>
-            </div>
-            <div class="token-grid"></div>
-        `;
-        const tokenGrid = visionSection.querySelector('.token-grid');
-        const refreshButton = document.getElementById('refreshButton');
-        refreshButton.addEventListener('click', updateUI);
-        
-        try {
-            const ownedTokens = await getOwnedTokens(selectedAccount);
-            
-            if (ownedTokens.length === 0) {
-                tokenGrid.innerHTML = '<p>You don\'t own any Kittens yet. Mint some to see them here!</p>';
-            } else {
-                tokenGrid.innerHTML = '';
-                for (let i = 0; i < ownedTokens.length; i++) {
-                    const tokenId = ownedTokens[i];
-                    const tokenImage = document.createElement('img');
-                    tokenImage.src = `./nfts/images/${tokenId}.png`;
-                    tokenImage.alt = `Kitten #${tokenId}`;
-                    tokenImage.className = 'token-image';
-                    tokenGrid.appendChild(tokenImage);
-                    
-                    if (i < ownedTokens.length - 1) {
-                        await new Promise(resolve => setTimeout(resolve, 2000));
+            const providerOptions = {
+                walletconnect: {
+                    package: WalletConnectProvider.default,
+                    options: {
+                        rpc: {
+                            [parseInt(AVAX_CHAIN_ID, 16)]: AVAX_RPC_URL
+                        },
+                        network: 'avalanche'
                     }
                 }
-            }
-        } catch (error) {
-            console.error('Error fetching owned tokens:', error);
-            tokenGrid.innerHTML = '<p>Error fetching your Kittens. Please try again later.</p>';
-        }
-    } else {
-        visionSection.innerHTML = '<p>Connect your wallet to see your Kittens!</p>';
-    }
+            };
 
-    try {
-        await getTotalSupply();
-    } catch (error) {
-        console.error('Error fetching total supply:', error);
-        document.getElementById("resultsupply").innerHTML = 'Error';
-    }
-}
+            const web3Modal = new window.Web3Modal.default({
+                network: "avalanche",
+                cacheProvider: false,
+                providerOptions
+            });
+
+            try {
+                const provider = await web3Modal.connect();
+                web3 = new Web3(provider);
+                const accounts = await web3.eth.getAccounts();
+                selectedAccount = accounts[0];
+                contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS, {
+                    from: selectedAccount,
+                });
+
+                console.log('Connected with Web3Modal:', selectedAccount);
+
+                provider.on("accountsChanged", (accounts) => {
+                    selectedAccount = accounts[0];
+                    console.log('Account changed:', selectedAccount);
+                    updateUI();
+                });
+
+                provider.on("chainChanged", (chainId) => {
+                    console.log('Chain changed:', chainId);
+                    if (chainId !== AVAX_CHAIN_ID) {
+                        switchToAVAXChain();
+                    }
+                });
+
+                provider.on("disconnect", (code, reason) => {
+                    console.log('Disconnected:', code, reason);
+                    selectedAccount = null;
+                    updateUI();
+                });
+
+                await switchToAVAXChain();
+                await updateUI();
+            } catch (error) {
+                console.error('Failed to connect with Web3Modal:', error);
+            }
+        }
+
+        async function updateUI() {
+            const connectButton = document.getElementById('connectButton');
+            const visionSection = document.querySelector('.vision');
+            
+            if (selectedAccount) {
+                connectButton.textContent = selectedAccount.slice(0, 6) + '...' + selectedAccount.slice(-4);
+                
+                visionSection.innerHTML = `
+                    <h2>Your Kittens</h2>
+                    <div class="refresh-container">
+                        <button id="refreshButton" class="btn">Refresh</button>
+                    </div>
+                    <div class="token-grid"></div>
+                `;
+                const tokenGrid = visionSection.querySelector('.token-grid');
+                const refreshButton = document.getElementById('refreshButton');
+                refreshButton.addEventListener('click', updateUI);
+                
+                try {
+                    const ownedTokens = await getOwnedTokens(selectedAccount);
+                    
+                    if (ownedTokens.length === 0) {
+                        tokenGrid.innerHTML = '<p>You don\'t own any Kittens yet. Mint some to see them here!</p>';
+                    } else {
+                        tokenGrid.innerHTML = '';
+                        for (let i = 0; i < ownedTokens.length; i++) {
+                            const tokenId = ownedTokens[i];
+                            const tokenImage = document.createElement('img');
+                            tokenImage.src = `./nfts/images/${tokenId}.png`;
+                            tokenImage.alt = `Kitten #${tokenId}`;
+                            tokenImage.className = 'token-image';
+                            tokenGrid.appendChild(tokenImage);
+                            
+                            if (i < ownedTokens.length - 1) {
+                                await new Promise(resolve => setTimeout(resolve, 2000));
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching owned tokens:', error);
+                    tokenGrid.innerHTML = '<p>Error fetching your Kittens. Please try again later.</p>';
+                }
+            } else {
+                connectButton.textContent = 'Connect Wallet';
+                visionSection.innerHTML = '<p>Connect your wallet to see your Kittens!</p>';
+            }
+
+            try {
+                await getTotalSupply();
+            } catch (error) {
+                console.error('Error fetching total supply:', error);
+                document.getElementById("resultsupply").innerHTML = 'Error';
+            }
+        }
+
         function handleDeepLink() {
             const url = new URL(window.location.href);
             const accountParam = url.searchParams.get('account');
@@ -299,22 +253,115 @@ async function updateUI() {
             }
         }
 
-window.addEventListener('load', () => {
-    handleDeepLink();
-    ReactDOM.render(
-        React.createElement(RainbowKitApp),
-        document.getElementById('root')
-    );
-    updateMintAmountDisplay();
-    getTotalSupply();
-    updateUI();
-});
+        window.addEventListener('load', () => {
+            handleDeepLink();
+            document.getElementById('connectButton').addEventListener('click', connectWallet);
+            updateMintAmountDisplay();
+            getTotalSupply();
+            updateUI();
+        });
+
         fetch('/.netlify/functions/server')
             .then(response => response.json())
             .then(data => console.log(data.message));
     </script>
 </head>
 <body>
-    <div id="root"></div>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="/images/logo.png" alt="CapyVault Logo">
+                    <span>KittenWorld</span>
+                </div>
+                <div class="nav-links">
+                    <button id="connectButton" class="btn">Connect Wallet</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text" >
+                    <h1 style="font-size: 75px; text-shadow: -0px -0px 0 #597cff, 0px 0px 0 #597cff, -0px 0px 0 #597cff, 3px 3px 0 #597cff;">You love cats!?</h1>
+                    <p>Join Kitten on AVAX to Grow Your Portfolio on Autopilot</p>
+                    <div class="hero-buttons">
+                        <a href="#mint-section" style="font-size: 30px;" class="btn bouncing" onclick="scrollToMint(event)">Mint Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="content" style="display: block;">
+        <div class="suprator-container">
+            <div class="suprator" style="transform: rotate(5deg);">
+                <div class="scrolling-text" style="transform: rotate(20deg);">
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                    <span>KITTEN ON AVAX</span> <span>KITTEN ON AVAX</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="capybara-group">
+        <div class="container">
+            <img src="/images/capybara-group.png" alt="Kitten">
+        </div>
+    </section>
+
+    <section class="mission">
+        <div class="container">
+            <h2 style="text-shadow: -0px -0px 0 #597cff, 0px 0px 0 #597cff, -0px 0px 0 #597cff, 3px 3px 0 #597cff;font-weight: 700;">Kitten's Mission</h2>
+            <div class="mission-card">
+                <img src="/images/mission-icon.png" alt="Mission Icon">
+                <p>"We're on a mission to get the word out about $kitten on social media!"</p>
+            </div>
+            <div class="mission-card">
+                <img src="/images/new-way-icon.png" alt="New Way Icon">
+                <div>
+                    <h3>Making Friends</h3>
+                    <p>We want to make friends with as many animals as possible.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mint-section" class="how-it-works">
+        <div class="container">
+            <h2>Total Minted</h2>
+            
+            <div style="text-align: center; color: white">
+                <div style="display: flex; justify-content: center; margin-top: -30px; margin-bottom: 0px">
+                    <br>
+                    <span style="color: #fff; font-weight: 700; font-size:20px" id="resultsupply"></span>
+                    <span style="color: #fff; font-weight: 700; font-size: 20px;">/5000</span>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 10px; margin-bottom: 10px">
+                    <img style="width: 200px; height: 200px; border: 1px black solid" src="example.webp">
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 10px; margin-bottom: 10px">
+                    <h4 style="text-align: center; margin-bottom: 2px; color: white; font-weight: 700;">1 AVAX</h4>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 10px; margin-bottom: 10px">
+                    <button class="btn" style="line-height: 0.4;" onclick="decrementMintAmount()">-</button>
+                    <span id="mint-amount" style="color: #d65752; font-size: 2rem; padding-left: 10px; padding-right:                     10px;">&nbsp;3&nbsp;</span>
+                    <button class="btn" style="line-height: 0.4" onclick="incrementMintAmount()">+</button>
+                </div>
+                <button class="btn" style="font-size: 20px;" onclick="mint()">MINT NOW</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="vision">
+    </section>
 </body>
 </html>
